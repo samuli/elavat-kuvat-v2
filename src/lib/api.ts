@@ -42,6 +42,7 @@ export type _iRecord = iRecord;
 export type _iFacet = iFacet;
 export type _iFacetResult = iFacetResult;
 export type _iSearchResult = iSearchResult;
+export type _TDateRange = TDaterage;
 
 //export const clientBase = process.env.NEXT_PUBLIC_API_BASE;
 const base = 'https://api.finna.fi/api/v1';
@@ -63,7 +64,7 @@ const filters = (daterange?: TDaterange): string => {
     '-id:kavi.elonet_elokuva_1611548',
     '-genre_facet:katsaus',
   ];
-  filters.push(`search_daterange_mv:"${daterange[0]} TO ${daterange[1]}"`);
+  filters.push(`search_daterange_mv:"[${daterange[0]} TO ${daterange[1]}]"`);
   return filters.map((f) => `filter[]=${encodeURIComponent(f)}`).join('&');
 };
 

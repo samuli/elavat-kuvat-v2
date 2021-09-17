@@ -1,12 +1,15 @@
 <script context="module" lang="ts">
+  import { browser } from '$app/env';
+  import { get } from 'svelte/store';
   import Results from '../../../components/Results/index.svelte';
-  import { searchUrl, topicFacetsUrl, topicFacetsUrl } from '$lib/api';
-  import { facetPromise, loadPromises, promisifyRequest, searchPromise } from '$lib/util';
-  import type { _iRecord as iRecord } from '$lib/api';
+  import topicsStore from '../../../stores/topicsStore';
+  import { searchUrl, topicFacetsUrl } from '$lib/api';
+  import { facetPromise, loadPromises, searchPromise } from '$lib/util';
+  import type { _TDateRange as TDateRange, _iRecord as iRecord } from '$lib/api';
   import type { Load } from '@sveltejs/kit';
 
-  export const load: Load = async ({ fetch, page }) => {
-    const facetKey = page.params.facet; //params = page.params.params.split('/');
+  export const load: Load = async ({ fetch, page, context, session }) => {
+    const facetKey = page.params.facet;
     const facetValue = page.params.id;
     const resultPage = Number(page.query.get('page') || 1);
     let topicsUrl = '';
@@ -14,15 +17,16 @@
     switch (facetKey) {
       case 'topic':
         recordsUrl = searchUrl('', resultPage, facetValue);
-        topicsUrl = topicFacetsUrl('', facetValue);
+        topicsUrl = topicFacetsUrl('', facetValue, null);
         break;
       case 'genre':
         recordsUrl = searchUrl('', resultPage, null, facetValue);
         topicsUrl = topicFacetsUrl('', null, facetValue);
-        console.log(topicsUrl);
         break;
       case 'date':
-        const range = [1900, 2000];
+        let range: TDateRange = facetValue
+          .split('-')
+          .map((year) => (year === '*' ? year : Number(year)));
         recordsUrl = searchUrl('', resultPage, null, null, range);
         topicsUrl = topicFacetsUrl('', null, null, range);
         break;
@@ -31,10 +35,27 @@
         topicsUrl = topicFacetsUrl('');
         break;
     }
-    // const fetchTopics = promisifyRequest(await getFacets('topic', topicFacetsUrl('', topic)));
-    const fetchTopics = facetPromise(fetch, 'topic', topicsUrl); //topicFacetsUrl('', facetValue));
-    const fetchRecords = searchPromise(fetch, recordsUrl); //searchUrl('', 1, facetValue));
-    const [topics, { records, resultCount }] = await loadPromises([fetchTopics, fetchRecords]);
+
+    // Restore previously loaded topics if url has not changed
+    const storedTopicsData = get(topicsStore);
+    let loadTopics = true;
+    let topics = [];
+    if (browser && storedTopicsData && storedTopicsData.url === topicsUrl) {
+      loadTopics = false;
+      topics = storedTopicsData.topics;
+    }
+    const fetchRecords = searchPromise(fetch, recordsUrl);
+    const fetchTopics = loadTopics
+      ? facetPromise(fetch, 'topic', topicsUrl)
+      : new Promise<void>((resolve) => resolve());
+
+    // const fetchTopics = facetPromise(fetch, 'topic', topicsUrl);
+    const [newTopics, { records, resultCount }] = await loadPromises([fetchTopics, fetchRecords]);
+    if (loadTopics) {
+      topics = newTopics;
+      topicsStore.set({ url: topicsUrl, topics });
+    }
+
     return {
       props: {
         topics,

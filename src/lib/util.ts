@@ -74,9 +74,11 @@ export const facetPromise = (fetcher, facet, url) => {
     if (res.ok) {
       const data = (await res.json()) as iFacetResult;
       resolve(
-        filterFacetFields((data.facets as Record<string, iFacet[]>)[`${facet}_facet`]).map(
-          (f) => f.value
-        )
+        typeof data.facets === 'undefined'
+          ? []
+          : filterFacetFields((data.facets as Record<string, iFacet[]>)[`${facet}_facet`]).map(
+              (f) => f.value
+            )
       );
     }
     reject('error topics');
