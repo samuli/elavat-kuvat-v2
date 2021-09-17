@@ -1,4 +1,9 @@
-import type { _iFacet as iFacet, _iFacetResult as iFacetResult } from './api';
+import type {
+  _iSearchResult as iSearchResult,
+  _iRecord as iRecord,
+  _iFacet as iFacet,
+  _iFacetResult as iFacetResult,
+} from './api';
 import type { apiResponse } from '../api/types';
 export const filterFacetFields = (facets: iFacet[] = []): iFacet[] => {
   return facets.map((item) => {
@@ -95,7 +100,11 @@ export const promisifyRequest = async (request): Promise<apiResponse> => {
   });
 };
 
-export const searchPromise = (fetcher, url) => {
+type searchPromiseData = {
+  records: iRecord[];
+  resultCount: number;
+};
+export const searchPromise = (fetcher, url): Promise<searchPromiseData> => {
   return new Promise(async (resolve, reject) => {
     const res = await fetcher(url, fetchOptions);
     if (res.ok) {

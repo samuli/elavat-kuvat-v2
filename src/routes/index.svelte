@@ -8,9 +8,10 @@
   import DecadeFilters from '../components/DecadeFilters.svelte';
   import ResultGrid from '../components/ResultGrid/index.svelte';
   import { loadPromises, decades, facetPromise, searchPromise } from '$lib/util';
-
+  import navigationState from '../stores/navigationState';
   import Fa from 'svelte-fa/src/fa.svelte';
   import { faRedoAlt as ReloadIcon } from '@fortawesome/free-solid-svg-icons';
+
   export const load: Load = async ({ fetch }) => {
     const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl());
     const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
@@ -46,6 +47,13 @@
   export let randomClips = [];
   export let error = '';
   export let randomClipsUrl = '';
+  const reloadClips = async () => {
+    console.log('reload');
+    $navigationState = 'loading';
+    const { records } = await searchPromise(fetch, frontPageUrl());
+    $navigationState = 'loaded';
+    randomClips = records;
+  };
 </script>
 
 <!-- prettier-ignore -->
@@ -77,7 +85,7 @@
                   title="Näytä lisää"
                   onClick="{() => {}}"
                 >
-                  <Fa icon="{ReloadIcon}" />
+                  <button on:click="{reloadClips}"><Fa icon="{ReloadIcon}" /></button>
                 </div>
               </div>
               <ResultGrid records="{randomClips}" />
