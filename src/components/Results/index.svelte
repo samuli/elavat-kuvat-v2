@@ -3,8 +3,9 @@
   import FacetStripe from '../FacetStripe.svelte';
   import Pagination from '../Pagination/index.svelte';
   import ResultGrid from '../ResultGrid/index.svelte';
-  import { _iRecord as iRecord, _iFacet as iFacet, searchLimit } from '$lib/api';
-  export let records: iRecord[] = [];
+  import type { IRecord } from '$lib/api';
+  import { searchLimit } from '$lib/api';
+  export let records: IRecord[] = [];
   export let resultCount: number = 0;
   export let topics: string[] = [];
   export let resultPage: number;

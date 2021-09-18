@@ -1,11 +1,6 @@
-import type {
-  _iSearchResult as iSearchResult,
-  _iRecord as iRecord,
-  _iFacet as iFacet,
-  _iFacetResult as iFacetResult,
-} from './api';
+import type { ISearchResult, IRecord, IFacet, IFacetResult } from './api';
 import type { apiResponse } from '../api/types';
-export const filterFacetFields = (facets: iFacet[] = []): iFacet[] => {
+export const filterFacetFields = (facets: IFacet[] = []): IFacet[] => {
   return facets.map((item) => {
     const { value, translated } = item;
     return { value, translated };
@@ -68,7 +63,7 @@ export const loadPromises = async (promises: Promise<unknown>[]) => {
 export const fetchOptions = {
   cf: {
     // Seconds to cache
-    cacheTtl: 60 * 15,
+    cacheTtl: 60 * 60,
     cacheEverything: true,
   },
 };
@@ -77,11 +72,11 @@ export const facetPromise = (fetcher, facet, url) => {
   return new Promise(async (resolve, reject) => {
     const res = await fetcher(url, fetchOptions);
     if (res.ok) {
-      const data = (await res.json()) as iFacetResult;
+      const data = (await res.json()) as IFacetResult;
       resolve(
         typeof data.facets === 'undefined'
           ? []
-          : filterFacetFields((data.facets as Record<string, iFacet[]>)[`${facet}_facet`]).map(
+          : filterFacetFields((data.facets as Record<string, IFacet[]>)[`${facet}_facet`]).map(
               (f) => f.value
             )
       );
@@ -101,14 +96,14 @@ export const promisifyRequest = async (request): Promise<apiResponse> => {
 };
 
 type searchPromiseData = {
-  records: iRecord[];
+  records: IRecord[];
   resultCount: number;
 };
 export const searchPromise = (fetcher, url): Promise<searchPromiseData> => {
   return new Promise(async (resolve, reject) => {
     const res = await fetcher(url, fetchOptions);
     if (res.ok) {
-      const data = (await res.json()) as iSearchResult;
+      const data = (await res.json()) as ISearchResult;
       resolve({ records: data.records, resultCount: data.resultCount });
     }
     reject('error random clips');

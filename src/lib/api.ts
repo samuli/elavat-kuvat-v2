@@ -5,44 +5,39 @@ type IVideoUrl = {
   title: string;
   type: string;
 };
-type iRecordUrl = {
+type IRecordUrl = {
   videoSources?: IVideoUrl[];
   text: string;
 };
-type iFacet = {
+type IFacet = {
   translated: string;
   value: string;
 };
 type TRecordId = string;
-type iRecord = {
+type IRecord = {
   id: TRecordId;
   title: string;
   rawData?: Record<string, unknown>;
   recordPage?: string;
   urls?: IRecordUrl[];
   images?: string[];
-  buildings: iFacet[];
-  genres?: iFacet[];
-  topics?: iFacet[];
+  buildings: IFacet[];
+  genres?: IFacet[];
+  topics?: IFacet[];
+  imageRights?: { link?: string; copyright?: string };
 };
-type iApiResult = {
+type IApiResult = {
   status: string;
   resultCount: number;
 };
-type iSearchResult = iApiResult & {
-  records?: iRecord[];
+type ISearchResult = IApiResult & {
+  records?: IRecord[];
 };
-type iFacetResult = iApiResult & {
-  facets?: Record<string, iFacet[]>;
+type IFacetResult = IApiResult & {
+  facets?: Record<string, IFacet[]>;
 };
 type TDaterangeEnd = number | '*';
 type TDaterange = [number, TDaterangeEnd];
-
-export type _iRecord = iRecord;
-export type _iFacet = iFacet;
-export type _iFacetResult = iFacetResult;
-export type _iSearchResult = iSearchResult;
-export type _TDateRange = TDaterage;
 
 //export const clientBase = process.env.NEXT_PUBLIC_API_BASE;
 const base = 'https://api.finna.fi/api/v1';
@@ -203,12 +198,9 @@ const getField = (rec: IRecord, field: string): string | undefined => {
   return undefined;
 };
 
-const finnaRecordPage = (id: string): string => `https://finna.fi${id}`;
+export type { IVideoUrl, IRecord, IFacet, IFacetResult, ISearchResult, TDaterange };
 
 export {
-  // iRecord,
-  // iFacet,
-  // iFacetResult,
   extractVideoUrls,
   autocompleteUrl,
   frontPageUrl,

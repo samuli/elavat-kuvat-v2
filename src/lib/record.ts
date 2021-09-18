@@ -1,6 +1,4 @@
-import { iRecord, iRecordUrl, iVideoUrl } from './api';
-
-
+import type { IRecord, IRecordUrl, IVideoUrl } from './api';
 export const recordUrl = (id: string): string => `/view?id=${encodeURIComponent(id)}`;
 
 export const extractVideoUrls = (rec: IRecord): IVideoUrl[] => {
@@ -10,7 +8,7 @@ export const extractVideoUrls = (rec: IRecord): IVideoUrl[] => {
   const mimeType = 'application/x-mpegURL';
   const videoUrls: IVideoUrl[] = [];
   (rec.urls || []).forEach((url: IRecordUrl) => {
-    (url.videoSources || []).forEach(videoUrl => {
+    (url.videoSources || []).forEach((videoUrl) => {
       if (videoUrl.type === mimeType) {
         videoUrls.push({ ...videoUrl, title: url.text });
       }
@@ -21,9 +19,9 @@ export const extractVideoUrls = (rec: IRecord): IVideoUrl[] => {
 
 export const getField = (rec: IRecord, field: string): string | undefined => {
   if (rec.rawData) {
-    return rec.rawData[field] as string || undefined;
+    return (rec.rawData[field] as string) || undefined;
   }
   return undefined;
-}
+};
 
 export const finnaRecordPage = (id: string): string => `https://finna.fi${id}`;

@@ -5,7 +5,7 @@
   import topicsStore from '../../../stores/topicsStore';
   import { searchUrl, topicFacetsUrl } from '$lib/api';
   import { facetPromise, loadPromises, searchPromise } from '$lib/util';
-  import type { _TDateRange as TDateRange, _iRecord as iRecord } from '$lib/api';
+  import type { TDateRange, IRecord } from '$lib/api';
   import type { Load } from '@sveltejs/kit';
 
   export const load: Load = async ({ fetch, page, context, session }) => {
@@ -68,7 +68,7 @@
 </script>
 
 <script lang="ts">
-  export let records: iRecord[] = [];
+  export let records: IRecord[] = [];
   export let resultCount: number = 0;
   export let topics: string[] = [];
   export let resultPage: number;
