@@ -52,7 +52,7 @@
     // const fetchTopics = facetPromise(fetch, 'topic', topicsUrl);
     const [newTopics, { records, resultCount }] = await loadPromises([fetchTopics, fetchRecords]);
     if (loadTopics) {
-      topics = newTopics;
+      topics = newTopics.filter((f) => f !== facetValue);
       topicsStore.set({ url: topicsUrl, topics });
     }
 

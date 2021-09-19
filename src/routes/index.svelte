@@ -2,19 +2,16 @@
   import { browser } from '$app/env';
   import type { Load } from '@sveltejs/kit';
   import { frontPageUrl } from '../lib/api';
-  import { genreFacetsUrl, topicFacetsUrl } from '$lib/api';
   import SearchHeading from '../components/SearchHeading.svelte';
   import FacetStripe from '../components/FacetStripe.svelte';
   import DecadeFilters from '../components/DecadeFilters.svelte';
   import ResultGrid from '../components/ResultGrid/index.svelte';
-  import { loadPromises, decades, facetPromise, searchPromise } from '$lib/util';
+  import { decades, searchPromise } from '$lib/util';
   import navigationState from '../stores/navigationState';
   import Fa from 'svelte-fa/src/fa.svelte';
   import { faRedoAlt as ReloadIcon } from '@fortawesome/free-solid-svg-icons';
 
   export const load: Load = async ({ fetch }) => {
-    const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl());
-    const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
     let url = frontPageUrl();
     if (browser) {
       const el = document.getElementById('random-clips-url');
@@ -23,19 +20,20 @@
       }
     }
     const fetchRandomClips = searchPromise(fetch, url);
+    const { records } = await fetchRandomClips;
 
-    const [topics, genres, { records }] = await loadPromises([
-      fetchTopics,
-      fetchGenres,
-      fetchRandomClips,
-    ]);
+    let topics = await fetch('/topFacets.json?facet=topic');
+    topics = await topics.json();
+
+    let genres = await fetch('/topFacets.json?facet=genre');
+    genres = await genres.json();
 
     return {
       props: {
-        topics,
         genres,
         randomClips: records,
         randomClipsUrl: url,
+        topics,
       },
     };
   };
@@ -45,7 +43,6 @@
   export let topics = [];
   export let genres = [];
   export let randomClips = [];
-  export let error = '';
   export let randomClipsUrl = '';
   const reloadClips = async () => {
     console.log('reload');
@@ -66,7 +63,6 @@
   }
 </svelte:head>
 
-<p>err: {error}</p>
 <section>
   <div class="pt-2 w-full">
     <div class="flex flex-col flex-wrap md:flex-nowrap">
