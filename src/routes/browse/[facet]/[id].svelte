@@ -8,7 +8,7 @@
   import type { TDateRange, IRecord } from '$lib/api';
   import type { Load } from '@sveltejs/kit';
 
-  export const load: Load = async ({ fetch, page, context, session }) => {
+  export const load: Load = async ({ fetch, page }) => {
     const facetKey = page.params.facet;
     const facetValue = page.params.id;
     const resultPage = Number(page.query.get('page') || 1);

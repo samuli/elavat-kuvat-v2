@@ -47,7 +47,6 @@
 
   export let genres: IFacet[] = [];
   export let topics: IFacet[] = [];
-  export let description: string = null;
   export let poster: string;
   let isMounted = false;
   let videoUrl = null;

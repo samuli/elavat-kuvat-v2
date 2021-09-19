@@ -5,8 +5,12 @@
   import BrandHeading from './BrandHeading.svelte';
   import { appSubtitle, appTitle } from '$lib/util';
   let showSearch: boolean = false;
-  let showAutocomplete: boolean = false;
   export let frontpage: boolean = false;
+
+  let loadedAutocomplete;
+  let loadAutocomplete = () => {
+    import('./Autocomplete.svelte').then((m) => (loadedAutocomplete = m.default));
+  };
 </script>
 
 <header class="flex flex-col top-0 px-5 pt-2 pb-1 shadow-xl bg-gray-900">
@@ -17,7 +21,7 @@
           <BrandHeading
             level="{frontpage ? 1 : 3}"
             onClick="{() => {
-              showAutocomplete = false;
+              showSearch = false;
               goto('/');
             }}"
             classes="text-3xl bg-gradient-to-t from-red-500 to-pink-500 text-transparent bg-clip-text sm:text-5xl mr-2 overflow-hidden whitespace-nowrap font-bold active:from-pink-500 cursor-pointer unstyled"
@@ -37,7 +41,7 @@
         role="button"
         title="Hae..."
         class="cursor-pointer ml-2"
-        onClick="{() => (showAutocomplete = true)}"
+        on:click="{() => (showSearch = true)}"
       >
         <Fa
           icon="{faSearch}"
@@ -47,5 +51,11 @@
       </div>
     {/if}
   </div>
-  <div>autocomplete</div>
+  {#if showSearch}
+    {#await loadAutocomplete()}
+      <p>Hetki....</p>
+    {:then}
+      <svelte:component this="{loadedAutocomplete}" closeSearch="{() => (showSearch = false)}" />
+    {/await}
+  {/if}
 </header>

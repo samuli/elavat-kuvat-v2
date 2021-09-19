@@ -11,7 +11,9 @@
   export let resultPage: number;
   $: pageCount = Math.ceil(Number(resultCount) / searchLimit);
   const setPage = (page) => {
-    goto(`${window.location.pathname}?page=${page}`);
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page);
+    goto(url.toString());
   };
 </script>
 
