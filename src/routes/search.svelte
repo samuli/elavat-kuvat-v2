@@ -3,7 +3,7 @@
   import navigationState from '../stores/navigationState';
   import { searchUrl, topicFacetsUrl } from '$lib/api';
   import type { IRecord } from '$lib/api';
-  import { facetPromise, loadPromises, searchPromise } from '$lib/util';
+  import { appTitle, facetPromise, loadPromises, searchPromise } from '$lib/util';
   import Results from '../components/Results/index.svelte';
 
   export const load: Load = async ({ fetch, page }) => {
@@ -44,6 +44,10 @@
     unsubscribe();
   });
 </script>
+
+<svelte:head>
+  <title>{lookfor} | {appTitle}</title>
+</svelte:head>
 
 {#if !loading && records.length === 0}
   <p>Ei tuloksia...</p>

@@ -2,6 +2,7 @@
   import { browser } from '$app/env';
   import type { Load } from '@sveltejs/kit';
   import { frontPageUrl } from '../lib/api';
+  import { appTitle, appSubtitle } from '../lib/util';
   import SearchHeading from '../components/SearchHeading.svelte';
   import FacetStripe from '../components/FacetStripe.svelte';
   import DecadeFilters from '../components/DecadeFilters.svelte';
@@ -55,7 +56,7 @@
 
 <!-- prettier-ignore -->
 <svelte:head>
-  <title>Home</title>
+  <title>{appTitle} - {appSubtitle}</title>
   {@html
   `
     <meta id="random-clips-url" data-url="${randomClipsUrl}"></script>

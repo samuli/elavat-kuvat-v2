@@ -4,8 +4,8 @@
   import Results from '../../../components/Results/index.svelte';
   import topicsStore from '../../../stores/topicsStore';
   import { searchUrl, topicFacetsUrl } from '$lib/api';
-  import { facetPromise, loadPromises, searchPromise } from '$lib/util';
-  import type { TDateRange, IRecord } from '$lib/api';
+  import { appTitle, facetPromise, loadPromises, searchPromise } from '$lib/util';
+  import type { IRecord } from '$lib/api';
   import type { Load } from '@sveltejs/kit';
 
   export const load: Load = async ({ fetch, page }) => {
@@ -19,12 +19,12 @@
       case 'topic':
         recordsUrl = searchUrl('', resultPage, facetValue);
         topicsUrl = topicFacetsUrl('', facetValue, null);
-        heading = 'Aihe: ';
+        heading = 'Aihe';
         break;
       case 'genre':
         recordsUrl = searchUrl('', resultPage, null, facetValue);
         topicsUrl = topicFacetsUrl('', null, facetValue);
-        heading = 'Genre: ';
+        heading = 'Genre';
         break;
       case 'date':
         let range: TDateRange = facetValue
@@ -32,14 +32,16 @@
           .map((year) => (year === '*' ? year : Number(year)));
         recordsUrl = searchUrl('', resultPage, null, null, range);
         topicsUrl = topicFacetsUrl('', null, null, range);
-        heading = 'Aikakausi: ';
+        heading = 'Aikakausi';
         break;
       case 'clips':
         recordsUrl = searchUrl('', resultPage);
         topicsUrl = topicFacetsUrl('');
-        heading = 'Selaa elokuvia: ';
+        heading = 'Selaa elokuvia';
         break;
     }
+
+    let title = facetKey !== 'clips' ? `${heading}: ${facetValue}` : heading;
 
     // Restore previously loaded topics if url has not changed
     const storedTopicsData = get(topicsStore);
@@ -68,6 +70,7 @@
         resultCount,
         resultPage,
         heading,
+        title,
       },
     };
   };
@@ -79,12 +82,17 @@
   export let topics: string[] = [];
   export let resultPage: number;
   export let heading: string;
+  export let title: string;
 </script>
+
+<svelte:head>
+  <title>{title} | {appTitle}</title>
+</svelte:head>
 
 <Results
   resultPage="{resultPage}"
   resultCount="{resultCount}"
   records="{records}"
-  heading="{heading}"
+  heading="{`${heading}:`}"
   topics="{topics}"
 />

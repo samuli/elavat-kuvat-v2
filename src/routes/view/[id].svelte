@@ -7,6 +7,7 @@
   } from '@fortawesome/free-solid-svg-icons';
   import type { Load } from '@sveltejs/kit';
   import { extractVideoUrls, recordUrl } from '../../lib/api';
+  import { appTitle } from '../../lib/util';
   import type { IFacet } from '$lib/api';
   import { finnaRecordPage, getField as getRecordField } from '$lib/record';
   import FacetStripe from '../../components/FacetStripe.svelte';
@@ -58,13 +59,16 @@
   });
 </script>
 
+<svelte:head>
+  <title>{record.title} | {appTitle}</title>
+</svelte:head>
 {#if isMounted === true && record}
   <div class="w-auto font-sans">
     <div class="mt-3">
       <article>
         <div class="flex flex-col w-full max-w-2xl">
           <div class="aspect-w-4 aspect-h-3 overflow-hidden">
-            <div class="absolute z-10 min-h-300" class:hidden="{!videoPaused}">
+            <div class="absolute z-10" class:hidden="{!videoPaused}">
               <div
                 on:click="{() => {
                   videoPaused = false;
