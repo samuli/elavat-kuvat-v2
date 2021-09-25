@@ -81,7 +81,9 @@
                   title="Näytä lisää"
                   onClick="{() => {}}"
                 >
-                  <button on:click="{reloadClips}"><Fa icon="{ReloadIcon}" /></button>
+                  <button on:click="{reloadClips}"
+                    ><Fa class="inline-block" icon="{ReloadIcon}" /></button
+                  >
                 </div>
               </div>
               <ResultGrid records="{randomClips}" />
@@ -103,7 +105,7 @@
           </div>
           <div class="mt-2">
             <SearchHeading title="Genret" />
-            <FacetStripe facet="genre_facet" facets="{genres}" />
+            <FacetStripe truncate="{false}" facet="genre_facet" facets="{genres}" />
           </div>
         </div>
       </div>
