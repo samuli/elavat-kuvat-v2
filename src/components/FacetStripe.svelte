@@ -17,12 +17,16 @@
   <ul>
     {#each facets as f}
       <a href="{facetBrowseUrl(facet, f)}">
-        <li
-          class="inline-flex flex-auto mr-1 mb-1 px-2 py-1 bg-gradient-to-b from-gray-100 to-gray-200 rounded-md text-xs font-medium subpixel-antialiased text-gray-800 uppercase. cursor-pointer ripple-bg-white whitespace-nowrap"
-        >
+        <li class="facet">
           {f}
         </li>
       </a>
     {/each}
   </ul>
 </div>
+
+<style>
+  .facet {
+    @apply inline-flex flex-auto mr-1 mb-1 px-2 py-1 bg-gradient-to-b from-gray-100 to-gray-200 rounded-md text-xs font-medium subpixel-antialiased text-gray-800 cursor-pointer whitespace-nowrap;
+  }
+</style>

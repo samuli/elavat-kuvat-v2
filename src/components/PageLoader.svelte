@@ -11,7 +11,7 @@
   });
   const unsubscribe = navigationState.subscribe((state) => {
     if (state === 'loaded') {
-      progress.set(1, { duration: 300 });
+      progress.set(1, { duration: 200 });
     }
   });
   onMount(() => {
@@ -38,6 +38,6 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: 1px;
   }
 </style>

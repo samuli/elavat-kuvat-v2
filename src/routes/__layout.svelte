@@ -10,7 +10,7 @@
 <div class="flex flex-col bg-gray-900 text-white align-center items-center min-h-screen">
   <div class="w-full max-w-6xl mb-10 flex flex-col flex-start flex-inline">
     {#if $navigationState === 'loading'}
-      <div out:fade="{{ delay: 500 }}">
+      <div out:fade="{{ delay: 200 }}">
         <PageLoader />
       </div>
     {/if}

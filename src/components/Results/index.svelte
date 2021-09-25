@@ -23,7 +23,9 @@
 <div>
   <div class="flex justify-between h-8">
     <SearchHeading title="{heading}" value="{lookfor}" resultCount="{resultCount}" />
-    <Pagination setPage="{setPage}" page="{resultPage}" pageCount="{pageCount}" small="{true}" />
+    {#if pageCount > 1}
+      <Pagination setPage="{setPage}" page="{resultPage}" pageCount="{pageCount}" small="{true}" />
+    {/if}
   </div>
   <FacetStripe facet="topic_facet" facets="{topics}" />
   <ResultGrid records="{records}" />
