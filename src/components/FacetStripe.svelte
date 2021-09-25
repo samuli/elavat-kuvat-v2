@@ -6,16 +6,19 @@
   export let facet: string = undefined;
   export let facets: string[] = [];
   // export let facetBrowseUrl = typeof facetBrowseUrl;
-  export let truncate = false;
+  export let truncate = true;
 </script>
 
-<div class:line-clamp-3={truncate} class:overflow-clip={truncate} class="mt-1 items-center w-full">
+<div
+  class:line-clamp-3="{truncate}"
+  class:overflow-clip="{truncate}"
+  class="mt-1 items-center w-full"
+>
   <ul>
     {#each facets as f}
-      <a href={facetBrowseUrl(facet, f)}>
+      <a href="{facetBrowseUrl(facet, f)}">
         <li
-          class="inline-flex flex-auto mr-2 mb-1 px-2 py-1 bg-gradient-to-b from-gray-100 to-gray-200 rounded-md text-xs font-medium subpixel-antialiased text-gray-800 uppercase. cursor-pointer ripple-bg-white whitespace-nowrap"
-          key={`facet-${f}`}
+          class="inline-flex flex-auto mr-1 mb-1 px-2 py-1 bg-gradient-to-b from-gray-100 to-gray-200 rounded-md text-xs font-medium subpixel-antialiased text-gray-800 uppercase. cursor-pointer ripple-bg-white whitespace-nowrap"
         >
           {f}
         </li>

@@ -77,7 +77,7 @@ const searchUrl = (
   genre?: string,
   daterange?: TDaterange,
   resultCount: number = limit,
-  recFields = ['title', 'id', 'images']
+  recFields = ['title', 'id', 'images', 'urls']
 ): string => {
   const queryFilters =
     filters(daterange) +
@@ -126,7 +126,7 @@ const frontPageUrl = (): string => {
   ];
   const randomSet = randomSets[Math.floor(Math.random() * randomSets.length)];
   const queryFilters = filters() + '&' + getApiFilter(randomSet[0], randomSet[1]);
-  const fields = ['title', 'id', 'images'].map((f) => `field[]=${f}`).join('&');
+  const fields = ['title', 'id', 'images', 'urls'].map((f) => `field[]=${f}`).join('&');
   return `${base}/search?${queryFilters}&${fields}&limit=20&sort=first_indexed%20desc`;
 };
 

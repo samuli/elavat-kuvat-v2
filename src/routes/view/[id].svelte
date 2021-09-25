@@ -27,7 +27,7 @@
           topics: getRecordField(record, 'topic_facet') || [],
           genres: getRecordField(record, 'genre_facet') || [],
           description: record.rawData?.description || null,
-          poster: `https://api.finna.fi${record.images[0]}`,
+          poster: record.images.length ? `https://api.finna.fi${record.images[0]}` : null,
         },
       };
     }
@@ -54,7 +54,7 @@
 
   onMount(async () => {
     isMounted = true;
-    videoUrl = videoUrls[0].src;
+    videoUrl = (videoUrls.length > 0 && videoUrls[0].src) || null;
   });
 </script>
 
@@ -64,7 +64,7 @@
       <article>
         <div class="flex flex-col w-full max-w-2xl">
           <div class="aspect-w-4 aspect-h-3 overflow-hidden">
-            <div class="absolute z-10" class:hidden="{!videoPaused}">
+            <div class="absolute z-10 min-h-300" class:hidden="{!videoPaused}">
               <div
                 on:click="{() => {
                   videoPaused = false;
@@ -97,21 +97,20 @@
               </div>
             </div>
             <div>
-              <vm-player
-                aspect-ratio="4:3"
-                viewType="video"
-                poster="{poster}"
-                autoplay="{false}"
-                controls
-                bind:this="{videoPlayer}"
-              >
-                <vm-hls crossOrigin="">
-                  <source data-src="{videoUrl}" type="application/x-mpegURL" />
-                </vm-hls>
-                <vm-ui>
-                  <vm-click-to-play></vm-click-to-play>
-                </vm-ui>
-              </vm-player>
+              {#if videoUrl}
+                <vm-player
+                  aspect-ratio="4:3"
+                  viewType="video"
+                  poster="{poster}"
+                  autoplay="{false}"
+                  controls
+                  bind:this="{videoPlayer}"
+                >
+                  <vm-hls crossOrigin="">
+                    <source data-src="{videoUrl}" type="application/x-mpegURL" />
+                  </vm-hls>
+                </vm-player>
+              {/if}
             </div>
           </div>
           <div class="flex flex-col justify-center mt-2">
@@ -179,13 +178,13 @@
             {#if topics.length > 0}
               <div class="mb-2">
                 <SearchHeading title="Aiheet" />
-                <FacetStripe facet="topic_facet" facets="{topics}" />
+                <FacetStripe truncate="{false}" facet="topic_facet" facets="{topics}" />
               </div>
             {/if}
             {#if genres.length > 0}
               <div>
                 <SearchHeading title="Genret" />
-                <FacetStripe facet="genre_facet" facets="{genres}" />
+                <FacetStripe truncate="{false}" facet="genre_facet" facets="{genres}" />
               </div>
             {/if}
           </div>

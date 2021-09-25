@@ -11,10 +11,8 @@
     if (data.status !== 'OK' || Number(data.resultCount) === 0) {
       return [];
     }
-    return [
-      { id: 0, title: `Näytä kaikki haulla ${lookfor} (${data.resultCount})` },
-      ...data.records,
-    ];
+    const records = data.records.filter((rec) => typeof rec.urls !== 'undefined');
+    return [{ id: 0, title: `Näytä kaikki haulla ${lookfor} (${records.length})` }, ...records];
   }
   export let closeSearch;
   let selectedItem = null;
@@ -22,7 +20,6 @@
   let text;
   $: {
     if (browser && lookfor && lookfor !== '') {
-      console.log('look', selectedItem);
       const location = window.location;
       const url = new URL(`${location.protocol}//${location.host}/search`);
       url.searchParams.set('lookfor', lookfor);

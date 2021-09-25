@@ -17,6 +17,7 @@
     console.log([recordsUrl]);
     return {
       props: {
+        lookfor,
         topics,
         records,
         resultCount,
@@ -31,11 +32,17 @@
   export let resultCount: number = 0;
   export let topics: string[] = [];
   export let resultPage: number;
+  export let lookfor: string = '';
 </script>
 
-<Results
-  resultPage="{resultPage}"
-  resultCount="{resultCount}"
-  records="{records}"
-  topics="{topics}"
-/>
+{#if records.length === 0}
+  <p>Ei tuloksia...</p>
+{:else}
+  <Results
+    lookfor="{lookfor}"
+    resultPage="{resultPage}"
+    resultCount="{resultCount}"
+    records="{records}"
+    topics="{topics}"
+  />
+{/if}
