@@ -1,6 +1,5 @@
 <script context="module" lang="ts">
   import { onMount } from 'svelte';
-  // import { Video, Player } from '@vime/svelte';
   import Fa from 'svelte-fa/src/fa.svelte';
   import {
     faExternalLinkAlt as ExtLinkIcon,
@@ -57,11 +56,6 @@
     isMounted = true;
     videoUrl = videoUrls[0].src;
   });
-  const onPlaybackReady = () => {
-    // ...
-    console.log('redi');
-    videoPlayer.play();
-  };
 </script>
 
 {#if isMounted === true && record}
@@ -69,14 +63,17 @@
     <div class="mt-3">
       <article>
         <div class="flex flex-col w-full max-w-2xl">
-          <div class=".aspect-w-4 .aspect-h-3 overflow-hidden">
-            {#if videoPaused}
+          <div class="aspect-w-4 aspect-h-3 overflow-hidden">
+            <div class="absolute z-10" class:hidden="{!videoPaused}">
               <div
-                on:click="{() => (videoPaused = false)}"
+                on:click="{() => {
+                  videoPaused = false;
+                  videoPlayer.play();
+                }}"
                 class="flex relative items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 rounded-xl group cursor-pointer min-h-64"
               >
                 <div class="w-full h-full">
-                  <div class="aspect-w-5 aspect-h-4">
+                  <div>
                     {#if poster}
                       <img
                         alt="Esikatselukuva"
@@ -98,20 +95,24 @@
                   </div>
                 </div>
               </div>
-            {:else}
+            </div>
+            <div>
               <vm-player
                 aspect-ratio="4:3"
                 viewType="video"
-                autoplay
+                poster="{poster}"
+                autoplay="{false}"
                 controls
-                on:vmPlaybackReady="{onPlaybackReady}"
                 bind:this="{videoPlayer}"
               >
                 <vm-hls crossOrigin="">
                   <source data-src="{videoUrl}" type="application/x-mpegURL" />
                 </vm-hls>
+                <vm-ui>
+                  <vm-click-to-play></vm-click-to-play>
+                </vm-ui>
               </vm-player>
-            {/if}
+            </div>
           </div>
           <div class="flex flex-col justify-center mt-2">
             <div>
