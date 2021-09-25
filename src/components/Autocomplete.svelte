@@ -26,9 +26,7 @@
       const location = window.location;
       const url = new URL(`${location.protocol}//${location.host}/search`);
       url.searchParams.set('lookfor', lookfor);
-      console.log(url.toString());
       goto(url.toString());
-      // showSearch = false;
       closeSearch();
     }
   }
@@ -37,11 +35,9 @@
       if (selectedItem.id === 0) {
         lookfor = text;
       } else {
-        console.log('look', selectedItem);
         goto(recordUrl(selectedItem.id));
       }
       closeSearch();
-      // showSearch = false;
     }
   }
 </script>
