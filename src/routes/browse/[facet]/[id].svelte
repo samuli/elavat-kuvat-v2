@@ -14,14 +14,17 @@
     const resultPage = Number(page.query.get('page') || 1);
     let topicsUrl = '';
     let recordsUrl = '';
+    let heading = '';
     switch (facetKey) {
       case 'topic':
         recordsUrl = searchUrl('', resultPage, facetValue);
         topicsUrl = topicFacetsUrl('', facetValue, null);
+        heading = 'Aihe: ';
         break;
       case 'genre':
         recordsUrl = searchUrl('', resultPage, null, facetValue);
         topicsUrl = topicFacetsUrl('', null, facetValue);
+        heading = 'Genre: ';
         break;
       case 'date':
         let range: TDateRange = facetValue
@@ -29,10 +32,12 @@
           .map((year) => (year === '*' ? year : Number(year)));
         recordsUrl = searchUrl('', resultPage, null, null, range);
         topicsUrl = topicFacetsUrl('', null, null, range);
+        heading = 'Aikakausi: ';
         break;
       case 'clips':
         recordsUrl = searchUrl('', resultPage);
         topicsUrl = topicFacetsUrl('');
+        heading = 'Selaa elokuvia: ';
         break;
     }
 
@@ -62,6 +67,7 @@
         records,
         resultCount,
         resultPage,
+        heading,
       },
     };
   };
@@ -72,11 +78,13 @@
   export let resultCount: number = 0;
   export let topics: string[] = [];
   export let resultPage: number;
+  export let heading: string;
 </script>
 
 <Results
   resultPage="{resultPage}"
   resultCount="{resultCount}"
   records="{records}"
+  heading="{heading}"
   topics="{topics}"
 />

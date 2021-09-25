@@ -3,6 +3,7 @@
   import AutoComplete from 'simple-svelte-autocomplete';
   import { goto } from '$app/navigation';
   import { recordUrl } from '$lib/record';
+  import { filterDisplayableRecords } from '$lib/util';
   import { autocompleteUrl } from '$lib/api';
   async function searchFunction(lookfor) {
     const url = autocompleteUrl(lookfor, 20);
@@ -11,7 +12,7 @@
     if (data.status !== 'OK' || Number(data.resultCount) === 0) {
       return [];
     }
-    const records = data.records.filter((rec) => typeof rec.urls !== 'undefined');
+    const records = filterDisplayableRecords(data.records);
     return [{ id: 0, title: `Näytä kaikki haulla ${lookfor} (${records.length})` }, ...records];
   }
   export let closeSearch;

@@ -1,4 +1,6 @@
 <script context="module" lang="ts">
+  import { onDestroy } from 'svelte';
+  import navigationState from '../stores/navigationState';
   import { searchUrl, topicFacetsUrl } from '$lib/api';
   import type { IRecord } from '$lib/api';
   import { facetPromise, loadPromises, searchPromise } from '$lib/util';
@@ -33,9 +35,17 @@
   export let topics: string[] = [];
   export let resultPage: number;
   export let lookfor: string = '';
+
+  let loading = false;
+  const unsubscribe = navigationState.subscribe((state) => {
+    loading = state === 'loading';
+  });
+  onDestroy(() => {
+    unsubscribe();
+  });
 </script>
 
-{#if records.length === 0}
+{#if !loading && records.length === 0}
   <p>Ei tuloksia...</p>
 {:else}
   <Results
@@ -44,5 +54,6 @@
     resultCount="{resultCount}"
     records="{records}"
     topics="{topics}"
+    heading="Haku: "
   />
 {/if}

@@ -11,6 +11,7 @@
   export let topics: string[] = [];
   export let resultPage: number;
   export let lookfor: string = '';
+  export let heading: string = 'Haku: ';
   $: pageCount = Math.ceil(Number(resultCount) / searchLimit);
   const setPage = (page) => {
     const url = new URL(window.location.href);
@@ -21,7 +22,7 @@
 
 <div>
   <div class="flex justify-between h-8">
-    <SearchHeading title="Haku:" value="{lookfor}" resultCount="{resultCount}" />
+    <SearchHeading title="{heading}" value="{lookfor}" resultCount="{resultCount}" />
     <Pagination setPage="{setPage}" page="{resultPage}" pageCount="{pageCount}" small="{true}" />
   </div>
   <FacetStripe facet="topic_facet" facets="{topics}" />

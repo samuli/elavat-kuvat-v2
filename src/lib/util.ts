@@ -104,14 +104,19 @@ export const searchPromise = (fetcher, url): Promise<searchPromiseData> => {
     const res = await fetcher(url, fetchOptions);
     if (res.ok) {
       const data = (await res.json()) as ISearchResult;
-      data.records.map((r) => console.log(r.urls));
       resolve({
-        records: data.records.filter((rec) =>
-          rec.urls.find((url) => typeof url.videoSources !== 'undefined')
-        ),
+        records: filterDisplayableRecords(data.records || []),
         resultCount: data.resultCount,
       });
     }
     reject('error random clips');
   });
 };
+
+export const filterDisplayableRecords = (records: IRecord[]): IRecord[] =>
+  records.filter(
+    (rec) =>
+      rec.images.length > 0 &&
+      rec.urls &&
+      rec.urls.find((url) => typeof url.videoSources !== 'undefined')
+  );
