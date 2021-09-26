@@ -8,36 +8,30 @@
   } from '@fortawesome/free-solid-svg-icons';
   import type { Load } from '@sveltejs/kit';
   import { extractVideoUrls, recordUrl } from '../../lib/api';
-  import { appTitle } from '../../lib/util';
+  import { appTitle, loadPromises, searchPromise } from '../../lib/util';
   import type { IFacet } from '$lib/api';
   import { finnaRecordPage, getField as getRecordField } from '$lib/record';
   import FacetStripe from '../../components/FacetStripe.svelte';
   import SearchHeading from '../../components/SearchHeading.svelte';
   import Description from '../../components/record/Description.svelte';
   import Copyright from '../../components/record/Copyright.svelte';
+
   export const load: Load = async ({ page, fetch }) => {
     const url = recordUrl(page.params.id);
-    const res = await fetch(url);
-    if (res.ok) {
-      const data = await res.json();
-      const videoUrls = extractVideoUrls(data.records[0]);
-      const record = data.records[0];
-      return {
-        props: {
-          record,
-          videoUrls,
-          topics: getRecordField(record, 'topic_facet') || [],
-          genres: getRecordField(record, 'genre_facet') || [],
-          description: record.rawData?.description || null,
-          poster: record.images.length ? `https://api.finna.fi${record.images[0]}` : null,
-        },
-      };
-    }
-
-    const { statusMessage } = await res.json();
+    const recordPromise = searchPromise(fetch, url);
+    const [{ records }] = await loadPromises([recordPromise]); //res = await fetch(url);
+    const videoUrls = extractVideoUrls(records[0]);
+    const record = records[0];
 
     return {
-      error: new Error(statusMessage),
+      props: {
+        record,
+        videoUrls,
+        topics: getRecordField(record, 'topic_facet') || [],
+        genres: getRecordField(record, 'genre_facet') || [],
+        description: record.rawData?.description || null,
+        poster: record.images.length ? `https://api.finna.fi${record.images[0]}` : null,
+      },
     };
   };
 </script>
