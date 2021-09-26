@@ -28,5 +28,7 @@
     {/if}
   </div>
   <FacetStripe facet="topic_facet" facets="{topics}" />
-  <ResultGrid records="{records}" />
+  <div class="mt-2">
+    <ResultGrid records="{records}" />
+  </div>
 </div>

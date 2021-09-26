@@ -93,6 +93,6 @@
   resultPage="{resultPage}"
   resultCount="{resultCount}"
   records="{records}"
-  heading="{`${heading}:`}"
+  heading="{title}"
   topics="{topics}"
 />
