@@ -46,7 +46,6 @@
   export let randomClips = [];
   export let randomClipsUrl = '';
   const reloadClips = async () => {
-    console.log('reload');
     $navigationState = 'loading';
     const { records } = await searchPromise(fetch, frontPageUrl());
     $navigationState = 'loaded';

@@ -10,7 +10,6 @@
   const recordPageUrl = finnaRecordPage(record.recordPage);
   const copyright = record.imageRights?.copyright;
   const url = record.imageRights?.link || recordPageUrl;
-  console.log(record);
 </script>
 
 <div class="flex flex-col">

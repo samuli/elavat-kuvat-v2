@@ -64,7 +64,7 @@ const filters = (daterange?: TDaterange): string => {
 };
 
 const autocompleteUrl = (lookfor: string, limit: number): string => {
-  const fields = ['title', 'id', 'images'].map((f) => `field[]=${f}`).join('&');
+  const fields = ['title', 'id', 'images', 'urls'].map((f) => `field[]=${f}`).join('&');
   return `${base}/search?lookfor=${encodeURIComponent(
     lookfor
   )}&${filters()}&${fields}&limit=${limit}`;

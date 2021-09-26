@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+  import { fade } from 'svelte/transition';
   import { onMount } from 'svelte';
   import Fa from 'svelte-fa/src/fa.svelte';
   import {
@@ -81,6 +82,8 @@
                     {#if poster}
                       <img
                         alt="Esikatselukuva"
+                        in:fade="{{ duration: 300 }}"
+                        out:fade="{{ duration: 10 }}"
                         src="{poster}"
                         class="w-auto rouded-xl overflow-hidden object-cover object-center"
                       />
@@ -100,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div>
+            <div class:hidden="{videoPaused}">
               {#if videoUrl}
                 <vm-player
                   aspect-ratio="4:3"
