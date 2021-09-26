@@ -67,7 +67,7 @@
               <div
                 on:click="{() => {
                   videoPaused = false;
-                  videoPlayer.play();
+                  setTimeout(() => videoPlayer.play(), 200);
                 }}"
                 class="flex relative items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 rounded-xl group cursor-pointer min-h-64"
               >
@@ -103,7 +103,7 @@
                   aspect-ratio="4:3"
                   viewType="video"
                   poster="{poster}"
-                  autoplay="{false}"
+                  autoplay="{true}"
                   controls
                   bind:this="{videoPlayer}"
                 >
