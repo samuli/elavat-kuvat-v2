@@ -78,12 +78,11 @@
                 <SearchHeading title="Poimintoja" />
                 <div
                   class="cursor-pointer active:text-pink-500"
-                  title="Näytä lisää"
-                  onClick="{() => {}}"
+                  on:click="{reloadClips}"
+                  role="button"
+                  title="Näytä lisää poimintoja"
                 >
-                  <button on:click="{reloadClips}"
-                    ><Fa class="inline-block" icon="{ReloadIcon}" /></button
-                  >
+                  <Fa class="inline-block" icon="{ReloadIcon}" />
                 </div>
               </div>
               <ResultGrid records="{randomClips}" />
