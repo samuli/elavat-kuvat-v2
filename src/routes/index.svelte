@@ -1,13 +1,13 @@
 <script context="module" lang="ts">
   import { browser } from '$app/env';
   import type { Load } from '@sveltejs/kit';
-  import { frontPageUrl } from '../lib/api';
+  import { frontPageUrl, genreFacetsUrl, topicFacetsUrl } from '../lib/api';
   import { appTitle, appSubtitle } from '../lib/util';
   import SearchHeading from '../components/SearchHeading.svelte';
   import FacetStripe from '../components/FacetStripe.svelte';
   import DecadeFilters from '../components/DecadeFilters.svelte';
   import ResultGrid from '../components/ResultGrid/index.svelte';
-  import { decades, searchPromise } from '$lib/util';
+  import { decades, facetPromise, searchPromise, loadPromises } from '$lib/util';
   import navigationState from '../stores/navigationState';
   import Fa from 'svelte-fa/src/fa.svelte';
   import { faRedoAlt as ReloadIcon } from '@fortawesome/free-solid-svg-icons';
@@ -21,13 +21,14 @@
       }
     }
     const fetchRandomClips = searchPromise(fetch, url);
-    const { records } = await fetchRandomClips;
+    const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl(''));
+    const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
 
-    let topics = await fetch('/topFacets.json?facet=topic');
-    topics = await topics.json();
-
-    let genres = await fetch('/topFacets.json?facet=genre');
-    genres = await genres.json();
+    const [{ records }, topics, genres] = await loadPromises([
+      fetchRandomClips,
+      fetchTopics,
+      fetchGenres,
+    ]);
 
     return {
       props: {
@@ -64,10 +65,10 @@
 </svelte:head>
 
 <section>
-  <div class="pt-2 w-full">
+  <div class="w-full">
     <div class="flex flex-col flex-wrap md:flex-nowrap">
       <SearchHeading title="Yleisimmät aiheet" />
-      <div class="h-16 min-h-32 w-full mt-1 mb-3">
+      <div class="h-16 min-h-32 w-full  mb-3">
         <FacetStripe facet="topic_facet" facets="{topics}" truncate="{true}" />
       </div>
       <div class="w-full">
