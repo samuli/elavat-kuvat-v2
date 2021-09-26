@@ -16,7 +16,6 @@
 
     const [topics, { records, resultCount }] = await loadPromises([fetchTopics, fetchRecords]);
 
-    console.log([recordsUrl]);
     return {
       props: {
         lookfor,
