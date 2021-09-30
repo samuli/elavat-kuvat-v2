@@ -52,13 +52,15 @@
       {/if}
     </div>
   </div>
-  <div
-    class="py-2 px-3 text-center text-gray-200 truncate text-center text-xs overflow-ellipsis group-hover:text-white"
-  >
-    {#if currentUrl && title}
-      <div class="self-end">{title}</div>
-    {:else}
-      <div class="self-end">&nbsp;</div>
-    {/if}
+  <div class="py-2 px-3">
+    <div
+      class="text-center line-clamp-2 text-gray-200 text-center text-xs overflow-ellipsis group-hover:text-white"
+    >
+      {#if currentUrl && title}
+        <div class="self-end">{title}</div>
+      {:else}
+        <div class="self-end">&nbsp;</div>
+      {/if}
+    </div>
   </div>
 </div>

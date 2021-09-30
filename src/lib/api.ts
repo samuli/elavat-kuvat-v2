@@ -43,7 +43,7 @@ type TDaterange = [number, TDaterangeEnd];
 const base = 'https://api.finna.fi/api/v1';
 //const base = 'http://localhost:3001/api/v1';
 // const base = 'https://square-sound-4a46.samuli.workers.dev'; //'http://localhost:3001/api/v1';
-const limit = 20;
+const limit = 50;
 
 const getFilter = (key: string, val: string): string => `${key}=${encodeURIComponent(val)}`;
 const getApiFilter = (key: string, val: string): string =>
