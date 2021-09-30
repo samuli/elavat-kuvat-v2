@@ -18,21 +18,16 @@
 
   export const load: Load = async ({ page, fetch }) => {
     const url = recordUrl(page.params.id);
-    const recordPromise = searchPromise(fetch, url);
-    const [{ records }] = await loadPromises([recordPromise]); //res = await fetch(url);
-    const videoUrls = extractVideoUrls(records[0]);
-    const record = records[0];
-
-    return {
-      props: {
-        record,
-        videoUrls,
-        topics: getRecordField(record, 'topic_facet') || [],
-        genres: getRecordField(record, 'genre_facet') || [],
-        description: record.rawData?.description || null,
-        poster: record.images.length ? `https://api.finna.fi${record.images[0]}` : null,
-      },
-    };
+    const res = await fetch(`/api/record/${page.params.id}.json`);
+    if (res.ok) {
+      const data = await res.json();
+      return {
+        props: {
+          ...data,
+        },
+      };
+    }
+    return new Error('Error loading record');
   };
 </script>
 
@@ -72,7 +67,7 @@
                 class="flex relative items-center justify-center bg-gradient-to-b from-gray-900 to-gray-800 rounded-xl group cursor-pointer min-h-64"
               >
                 <div class="w-full h-full">
-                  <div>
+                  <div class="aspect-w-4 aspect-h-3 items-center justify-center">
                     {#if poster}
                       <img
                         alt="Esikatselukuva"

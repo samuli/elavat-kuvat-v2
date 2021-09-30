@@ -5,16 +5,18 @@
   import { recordUrl } from '$lib/record';
   import { filterDisplayableRecords } from '$lib/util';
   import { autocompleteUrl } from '$lib/api';
+
   async function searchFunction(lookfor) {
-    const url = autocompleteUrl(lookfor, 20);
+    const url = `/api/autocomplete/results.json?lookfor=${encodeURIComponent(lookfor)}`; //`autocompleteUrl(lookfor, 20);
     const res = await fetch(url);
     const data = await res.json();
-    if (data.status !== 'OK' || Number(data.resultCount) === 0) {
+    if (!data || Number(data.resultCount) === 0) {
       return [];
     }
     const records = filterDisplayableRecords(data.records);
     return [{ id: 0, title: `Näytä kaikki haulla ${lookfor} (${records.length})` }, ...records];
   }
+
   export let closeSearch;
   let selectedItem = null;
   let lookfor;

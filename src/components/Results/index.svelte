@@ -31,4 +31,9 @@
   <div class="mt-2">
     <ResultGrid records="{records}" />
   </div>
+  <div class="mt-4 flex justify-center">
+    {#if pageCount > 1}
+      <Pagination setPage="{setPage}" page="{resultPage}" pageCount="{pageCount}" small="{false}" />
+    {/if}
+  </div>
 </div>

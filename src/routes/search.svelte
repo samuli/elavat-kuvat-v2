@@ -1,21 +1,30 @@
 <script context="module" lang="ts">
   import { onDestroy } from 'svelte';
   import navigationState from '../stores/navigationState';
-  import { searchUrl, topicFacetsUrl } from '$lib/api';
   import type { IRecord } from '$lib/api';
-  import { appTitle, facetPromise, loadPromises, searchPromise } from '$lib/util';
+  import { appTitle, fetchOptions } from '$lib/util';
   import Results from '../components/Results/index.svelte';
 
   export const load: Load = async ({ fetch, page }) => {
     const lookfor = page.query.get('lookfor');
     const resultPage = Number(page.query.get('page') || 1);
-    const recordsUrl = searchUrl(lookfor, resultPage);
-    const topicsUrl = topicFacetsUrl(lookfor);
-    const fetchRecords = searchPromise(fetch, recordsUrl);
-    const fetchTopics = facetPromise(fetch, 'topic', topicsUrl);
-
-    const [topics, { records, resultCount }] = await loadPromises([fetchTopics, fetchRecords]);
-
+    const res = await fetch(
+      `/api/search/results.json?lookfor=${lookfor}&page=${resultPage}`,
+      fetchOptions
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const { records, topics, ...rest } = data;
+      return {
+        props: {
+          lookfor,
+          topics,
+          records: records.records,
+          resultCount: records.resultCount,
+          resultPage,
+        },
+      };
+    }
     return {
       props: {
         lookfor,

@@ -20,16 +20,27 @@
         url = el.getAttribute('data-url');
       }
     }
-    const fetchRandomClips = searchPromise(fetch, url);
-    const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl(''));
-    const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
-
-    const [{ records }, topics, genres] = await loadPromises([
-      fetchRandomClips,
-      fetchTopics,
-      fetchGenres,
-    ]);
-
+    // const fetchRandomClips = searchPromise(fetch, url);
+    //
+    let topics = [];
+    let genres = [];
+    let records = [];
+    const facetsRes = await fetch(`/api/frontpage.json?recordUrl=${encodeURIComponent(url)}`);
+    if (facetsRes.ok) {
+      const facetData = await facetsRes.json();
+      topics = facetData.topics;
+      genres = facetData.genres;
+      records = facetData.records;
+    }
+    // const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl(''));
+    // const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
+    //
+    // const [{ records }] = await loadPromises([
+    //   fetchRandomClips,
+    //   // fetchTopics,
+    //   // fetchGenres,
+    // ]);
+    //
     return {
       props: {
         genres,
