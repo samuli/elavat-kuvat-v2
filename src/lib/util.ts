@@ -63,7 +63,7 @@ export const loadPromises = async (promises: Promise<unknown>[]) => {
 export const fetchOptions = {
   cf: {
     // Seconds to cache
-    cacheTtl: 60 * 60,
+    cacheTtl: 60 * 60 * 3,
     cacheEverything: true,
   },
 };
