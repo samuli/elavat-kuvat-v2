@@ -12,7 +12,7 @@
   import Fa from 'svelte-fa/src/fa.svelte';
   import { faRedoAlt as ReloadIcon } from '@fortawesome/free-solid-svg-icons';
 
-  export const load: Load = async ({ fetch }) => {
+  export const load: Load = async ({ fetch, context }) => {
     let url = frontPageUrl();
     if (browser) {
       const el = document.getElementById('random-clips-url');
@@ -22,15 +22,11 @@
     }
     // const fetchRandomClips = searchPromise(fetch, url);
     //
-    let topics = [];
-    let genres = [];
     let records = [];
-    const facetsRes = await fetch(`/api/frontpage.json?recordUrl=${encodeURIComponent(url)}`);
-    if (facetsRes.ok) {
-      const facetData = await facetsRes.json();
-      topics = facetData.topics;
-      genres = facetData.genres;
-      records = facetData.records;
+    const recordsRes = await fetch(`/api/frontpage.json?recordUrl=${encodeURIComponent(url)}`);
+    if (recordsRes.ok) {
+      const recordData = await recordsRes.json();
+      records = recordData.records;
     }
     // const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl(''));
     // const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
@@ -43,10 +39,10 @@
     //
     return {
       props: {
-        genres,
+        genres: context.genres,
         randomClips: records,
         randomClipsUrl: url,
-        topics,
+        topics: context.topics,
       },
     };
   };
