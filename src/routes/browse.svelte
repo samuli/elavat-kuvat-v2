@@ -1,13 +1,14 @@
 <script context="module" lang="ts">
-  import Results from '../../../components/Results/index.svelte';
+  import Results from '../components/Results/index.svelte';
   import { appTitle, fetchOptions } from '$lib/util';
   import type { IRecord } from '$lib/api';
   import type { Load } from '@sveltejs/kit';
 
   export const load: Load = async ({ fetch, page }) => {
-    const facetKey = page.params.facet;
-    const facetValue = page.params.id;
+    const [facetKey,facetValue] = page.query.get("facet").split(":"); //params.facet;
     const resultPage = Number(page.query.get('page') || 1);
+    console.log([facetKey,facetValue])
+    console.log(`/api/browse/${facetKey}/${facetValue}.json?page=${resultPage}`)
     const res = await fetch(
       `/api/browse/${facetKey}/${facetValue}.json?page=${resultPage}`,
       fetchOptions

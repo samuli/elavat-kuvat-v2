@@ -4,6 +4,9 @@
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
+    "publish:worker": "wrangler publish",
+    "publish:assets": "b2 sync --keepDays 1 --replaceNewer .svelte-kit/output/client b2://elavat-kuvat && b2 sync --keepDays 1 --replaceNewer static b2://elavat-kuvat",
+    "publish": "npm run publish:assets && npm run publish:worker",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
@@ -34,6 +37,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@cloudflare/wrangler": "^1.19.3",
     "@fontsource/fira-mono": "^4.2.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@lukeed/uuid": "^2.0.0",

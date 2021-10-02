@@ -7,18 +7,17 @@
     faPlay as PlayIcon,
   } from '@fortawesome/free-solid-svg-icons';
   import type { Load } from '@sveltejs/kit';
-  import { extractVideoUrls, recordUrl } from '../../lib/api';
-  import { appTitle, loadPromises, searchPromise } from '../../lib/util';
+  import { extractVideoUrls, recordUrl } from '../lib/api';
+  import { appTitle, loadPromises, searchPromise } from '../lib/util';
   import type { IFacet } from '$lib/api';
   import { finnaRecordPage, getField as getRecordField } from '$lib/record';
-  import FacetStripe from '../../components/FacetStripe.svelte';
-  import SearchHeading from '../../components/SearchHeading.svelte';
-  import Description from '../../components/record/Description.svelte';
-  import Copyright from '../../components/record/Copyright.svelte';
+  import FacetStripe from '../components/FacetStripe.svelte';
+  import SearchHeading from '../components/SearchHeading.svelte';
+  import Description from '../components/record/Description.svelte';
+  import Copyright from '../components/record/Copyright.svelte';
 
   export const load: Load = async ({ page, fetch }) => {
-    const url = recordUrl(page.params.id);
-    const res = await fetch(`/api/record/${page.params.id}.json`);
+    const res = await fetch(`/api/record/${page.query.get("id")}.json`);
     if (res.ok) {
       const data = await res.json();
       return {

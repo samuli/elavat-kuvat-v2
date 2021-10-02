@@ -18,7 +18,7 @@ const config = {
     hydrate: true,
     ssr: true,
     paths: {
-      assets: 'https://static.elavatkuvat.fi/elavat-kuvat-v2/build',
+      assets: 'https://static2.elavatkuvat.fi/file/elavat-kuvat',
     },
   },
 };

@@ -94,7 +94,7 @@
                 </div>
               </div>
               <ResultGrid records="{randomClips}" />
-              <a href="/browse/clips/all">
+              <a href="/browse?facet=clips">
                 <div
                   role="button"
                   class="inline-flex mt-6 mb-4 py-3 px-4 text-md subpixel-antialiased font-medium tracking-tight rounded-xl bg-gray-200 text-gray-900 hover:text-black hover:bg-white cursor-pointer bg-gradient-to-b from-gray-100 to-gray-300 ripple-bg-white"

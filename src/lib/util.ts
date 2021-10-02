@@ -30,7 +30,7 @@ export const yearTitle = (year: number): string => map[year];
 export const facetSearchUrl = (facet: string, value: string): string =>
   `/search?${facetMap[facet]}=${encodeURIComponent(value)}`;
 export const facetBrowseUrl = (facet: string, value: string): string =>
-  `/browse/${facetMap[facet]}/${encodeURIComponent(value).replace(/äöööö/g, '+')}`;
+  `/browse?facet=${facetMap[facet]}:${encodeURIComponent(value).replace(/äöööö/g, '+')}`;
 
 export const appTitle = 'Elävät kuvat';
 export const appSubtitle = 'suomalaisia lyhytelokuvia';
