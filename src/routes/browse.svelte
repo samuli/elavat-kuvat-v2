@@ -5,10 +5,8 @@
   import type { Load } from '@sveltejs/kit';
 
   export const load: Load = async ({ fetch, page }) => {
-    const [facetKey,facetValue] = page.query.get("facet").split(":"); //params.facet;
+    const [facetKey, facetValue] = page.query.get('facet').split(':'); //params.facet;
     const resultPage = Number(page.query.get('page') || 1);
-    console.log([facetKey,facetValue])
-    console.log(`/api/browse/${facetKey}/${facetValue}.json?page=${resultPage}`)
     const res = await fetch(
       `/api/browse/${facetKey}/${facetValue}.json?page=${resultPage}`,
       fetchOptions
@@ -38,7 +36,6 @@
           records,
           resultCount,
           resultPage,
-          heading,
           title,
         },
       };
@@ -48,10 +45,9 @@
 
 <script lang="ts">
   export let records: IRecord[] = [];
-  export let resultCount: number = 0;
+  export let resultCount = 0;
   export let topics: string[] = [];
   export let resultPage: number;
-  export let heading: string;
   export let title: string;
 </script>
 
