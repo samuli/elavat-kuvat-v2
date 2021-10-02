@@ -16,17 +16,17 @@
   class:h-[6em]="{truncate}"
   class="items-center w-full mt-2"
 >
-  <ul>
+  <div>
     {#each facets as f}
       <div class="facet" in:fade="{{ delay: 200 }}">
         <a href="{facetBrowseUrl(facet, f)}">
-          <li class="px-2 py-1">
+          <div class="px-2 py-1">
             {f}
-          </li>
+          </div>
         </a>
       </div>
     {/each}
-  </ul>
+  </div>
 </div>
 
 <style>
