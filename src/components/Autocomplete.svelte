@@ -7,10 +7,10 @@
   import { autocompleteUrl } from '$lib/api';
 
   async function searchFunction(lookfor) {
-    const url = `/api/autocomplete/results.json?lookfor=${encodeURIComponent(lookfor)}`; //`autocompleteUrl(lookfor, 20);
+    const url = autocompleteUrl(lookfor, 20);
     const res = await fetch(url);
     const data = await res.json();
-    if (!data || Number(data.resultCount) === 0) {
+    if (data.status !== 'OK' || Number(data.resultCount) === 0) {
       return [];
     }
     const records = filterDisplayableRecords(data.records);

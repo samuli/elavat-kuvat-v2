@@ -1,18 +1,18 @@
 <script context="module" lang="ts">
   import { browser } from '$app/env';
   import type { Load } from '@sveltejs/kit';
-  import { frontPageUrl, genreFacetsUrl, topicFacetsUrl } from '../lib/api';
+  import { frontPageUrl } from '../lib/api';
   import { appTitle, appSubtitle } from '../lib/util';
   import SearchHeading from '../components/SearchHeading.svelte';
   import FacetStripe from '../components/FacetStripe.svelte';
   import DecadeFilters from '../components/DecadeFilters.svelte';
   import ResultGrid from '../components/ResultGrid/index.svelte';
-  import { decades, facetPromise, searchPromise, loadPromises } from '$lib/util';
+  import { decades, searchPromise, loadPromises } from '$lib/util';
   import navigationState from '../stores/navigationState';
   import Fa from 'svelte-fa/src/fa.svelte';
   import { faRedoAlt as ReloadIcon } from '@fortawesome/free-solid-svg-icons';
 
-  export const load: Load = async ({ fetch, context }) => {
+  export const load: Load = async ({ fetch }) => {
     let url = frontPageUrl();
     if (browser) {
       const el = document.getElementById('random-clips-url');
@@ -20,29 +20,80 @@
         url = el.getAttribute('data-url');
       }
     }
-    // const fetchRandomClips = searchPromise(fetch, url);
-    //
-    let records = [];
-    const recordsRes = await fetch(`/api/frontpage.json?recordUrl=${encodeURIComponent(url)}`);
-    if (recordsRes.ok) {
-      const recordData = await recordsRes.json();
-      records = recordData.records;
-    }
-    // const fetchTopics = facetPromise(fetch, 'topic', topicFacetsUrl(''));
-    // const fetchGenres = facetPromise(fetch, 'genre', genreFacetsUrl);
-    //
-    // const [{ records }] = await loadPromises([
-    //   fetchRandomClips,
-    //   // fetchTopics,
-    //   // fetchGenres,
-    // ]);
-    //
+    const fetchRandomClips = searchPromise(fetch, url);
+
+    const [{ records }] = await loadPromises([fetchRandomClips]);
+    const topics = [
+      'Helsinki',
+      'autot',
+      'vaatteet',
+      'kirkkorakennukset',
+      'Lappi',
+      'henkilöautot',
+      'elintarvikkeet',
+      'laivat',
+      'rakentaminen',
+      'satamat',
+      'Suomi',
+      'tehtaat',
+      'urheilu',
+      'lapset',
+      'kahvi',
+      'kalastus',
+      'patsaat',
+      'pankit',
+      'matkailu',
+      'virvoitusjuomat',
+      'juhlat',
+      'muoti',
+      'nuoret',
+      'hygienia',
+      'hiihto',
+      'maatalous',
+      'ravintolat',
+      'Tampere',
+      'liikenne',
+      'pesuaineet',
+    ];
+    const genres = [
+      'dokumentti',
+      'mainos',
+      'esittelyelokuva',
+      'ajankohtaisdokumentti',
+      'alueellinen kuvaus',
+      'tilauselokuva',
+      'teollisuusdokumentti',
+      'urheiludokumentti',
+      'kotiseutuelokuva',
+      'ammatinkuvaus',
+      'juhlaelokuva',
+      'valistuselokuva',
+      'kansatieteellinen elokuva',
+      'animaatio',
+      'fiktio & dokumentti',
+      'fiktio',
+      'henkilödokumentti',
+      'matkailuelokuva',
+      'draamadokumentti',
+      'sotadokumentti',
+      'tv-tuotanto',
+      'opetuselokuva',
+      'maatalousdokumentti',
+      'historiallinen dokumentti',
+      'tiedotuselokuva',
+      'yhteiskunnallinen dokumentti',
+      'perinne-elokuva',
+      'tietoisku',
+      'musiikkidokumentti',
+      'taidedokumentti',
+    ];
+
     return {
       props: {
-        genres: context.genres,
+        genres,
         randomClips: records,
         randomClipsUrl: url,
-        topics: context.topics,
+        topics,
       },
     };
   };
@@ -75,12 +126,12 @@
   <div class="w-full">
     <div class="flex flex-col flex-wrap md:flex-nowrap">
       <SearchHeading title="Yleisimmät aiheet" />
-      <div class="h-16 min-h-32 w-full  mb-3">
+      <div class="w-full">
         <FacetStripe facet="topic_facet" facets="{topics}" truncate="{true}" />
       </div>
       <div class="w-full">
         <div class="flex flex-col flex-wrap md:flex-nowrap">
-          <div class="mt-6">
+          <div class="mt-3">
             <div class="flex flex-col text-center">
               <div class="flex items-center mb-1">
                 <SearchHeading title="Poimintoja" />

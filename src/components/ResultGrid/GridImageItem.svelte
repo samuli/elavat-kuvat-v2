@@ -52,9 +52,9 @@
       {/if}
     </div>
   </div>
-  <div class="py-2 px-3">
+  <div class="py-2 px-3 h-11 flex align-center justify-center">
     <div
-      class="text-center line-clamp-2 text-gray-200 text-center text-xs overflow-ellipsis group-hover:text-white"
+      class="text-center m-auto line-clamp-2 text-gray-200 text-center text-xs overflow-ellipsis group-hover:text-white"
     >
       {#if currentUrl && title}
         <div class="self-end">{title}</div>

@@ -1,5 +1,5 @@
 import type { IRecord, IRecordUrl, IVideoUrl } from './api';
-export const recordUrl = (id: string): string => `/view?id=$ {encodeURIComponent(id)}`;
+export const recordUrl = (id: string): string => `/view?id=${encodeURIComponent(id)}`;
 
 export const extractVideoUrls = (rec: IRecord): IVideoUrl[] => {
   if (typeof rec.urls === 'undefined') {

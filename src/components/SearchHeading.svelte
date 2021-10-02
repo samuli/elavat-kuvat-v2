@@ -11,8 +11,7 @@
   {#if resultCount}
     <div>
       <div class="mr-2 text-sm text-gray-200 leading-tight">
-        ({resultCount}
-        <span class="sm:inline hidden"> elokuvaa</span>)
+        ({resultCount}<span class="sm:inline hidden ml-1"> elokuvaa</span>)
       </div>
     </div>
   {/if}
